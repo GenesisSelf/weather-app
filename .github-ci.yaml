@@ -1,0 +1,33 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '14'
+
+    - name: Install dependencies
+      run: npm install
+
+    - name: Load environment variables
+      run: |
+        npm install dotenv
+        npx dotenv --dotenv=.env npm run build 
+    
+    - name: Run the app
+      run: npm run dev
+
+    - name: Run tests
+      run: npm test
